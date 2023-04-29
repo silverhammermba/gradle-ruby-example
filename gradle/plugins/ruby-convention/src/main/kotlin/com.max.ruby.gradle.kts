@@ -17,10 +17,16 @@ val fetchRuntimeDependencies = tasks.register<FetchGems>("fetchRuntimeDependenci
     gems.set(mapOf("paint" to "2.3.0"))
 }
 
-tasks.register<RubySayHi>("sayHi") {
+tasks.register<RunRuby>("sayHello") {
     group = rubyGroup
     description = "Say hi using Ruby"
     dependsOn(fetchRuntimeDependencies)
 
     workingDir = rubyDir.get().asFile
+
+    script.set("""
+        require 'paint'
+
+        puts Paint['Hello, world!', :red]
+    """.trimIndent())
 }

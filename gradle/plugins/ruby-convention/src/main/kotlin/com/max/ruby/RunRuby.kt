@@ -1,13 +1,18 @@
 import com.max.ruby.pathLookup
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
-abstract class RubySayHi : Exec() {
+abstract class RunRuby : Exec() {
+    @get:Input
+    abstract val script: Property<String>
+
     @TaskAction
     override fun exec() {
-        val scriptPath = File(temporaryDir, "say_hi.rb")
-        scriptPath.writeText(script)
+        val scriptPath = File(temporaryDir, "tmp.rb")
+        scriptPath.writeText(script.get())
 
         val bundler = pathLookup("bundle", System.getProperty("user.home") + "/.rbenv/shims")
 
@@ -19,13 +24,5 @@ abstract class RubySayHi : Exec() {
         )
 
         super.exec()
-    }
-
-    companion object {
-        const val script = """
-require 'paint'
-
-puts Paint['Hello from Ruby!', :red]
-"""
     }
 }

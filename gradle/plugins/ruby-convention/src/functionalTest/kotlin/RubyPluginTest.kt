@@ -24,7 +24,7 @@ class RubyPluginTest {
         """.trimIndent()
         )
 
-        val taskPath = ":sayHi"
+        val taskPath = ":sayHello"
 
         val result = GradleRunner.create()
             .withProjectDir(projectDir.root)
@@ -36,6 +36,6 @@ class RubyPluginTest {
         val task = result.task(taskPath)
         assertEquals(TaskOutcome.SUCCESS, task?.outcome)
 
-        assertTrue("unexpected output ${result.output}", result.output.contains("Hello from Ruby!"))
+        assertTrue("unexpected output ${result.output}", result.output.contains("Hello, world!"))
     }
 }
